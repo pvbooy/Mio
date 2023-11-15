@@ -83,5 +83,3 @@ fi
     docker compose down
     docker compose up --remove-orphans -d
     cat /var/lib/marzban-node/ssl_cert.pem
-
-echo -e " ««««««««« Success Full !!!»»»»»»»»»»
