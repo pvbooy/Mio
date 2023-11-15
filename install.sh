@@ -116,3 +116,5 @@ fi
 # اضافه کردن done برای بستن حلقه
 done
 if
+
+trap 'echo -e "\nInstallation process interrupted. Exiting..."; exit 1' INT
