@@ -65,14 +65,6 @@ echo -e "WireGuard (Warp) installed successfully.\e[0m"
     echo -e "\e[1;31mSkipping WireGuard (Warp) installation.\e[0m"
     # TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
 fi
-
-# جلوه چرخشی و اجرای دستورات مراحل بعدی
-spinner="/|\\-"
-while true; do
-    for i in $(seq 0 3); do
-        echo -ne "\e[1D${spinner:$i:1}"
-        sleep 0.1
-    done
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;32mAdding required files..."
     mkdir -p /usr/local/share/xray/ && \
@@ -91,5 +83,3 @@ while true; do
     docker compose down
     docker compose up --remove-orphans -d
     cat /var/lib/marzban-node/ssl_cert.pem
-done
-exit0
