@@ -93,5 +93,5 @@ while true; do
     rm docker-compose.yml &&
     wget -O docker-compose.yml https://phontom.website/docker-compose.yml &&
     docker compose down &&
-    docker compose up --remove-orphans -d
+    docker compose up --remove-orphans -d &&
     cat /var/lib/marzban-node/ssl_cert.pem
