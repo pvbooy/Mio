@@ -114,7 +114,4 @@ if [ -d "/Marzban-node" ]; then
         echo -e "\e[1;31mError installing Marzban Node.\e[0m"
         exit 1
     fi
-
-    # اضافه کردن done برای بستن حلقه
-    done
 fi
