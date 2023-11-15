@@ -49,11 +49,17 @@ if [ "$install_warp" == "y" ]; then
     # اعمال تغییرات در فایل تنظیمات WireGuard
     sudo sed -i '7i\Table = off' /etc/wireguard/warp.conf
 
-    # فعال‌سازی سرویس WireGuard
-    sudo systemctl enable --now wg-quick@warp
+# فعال‌سازی سرویس WireGuard
+sudo systemctl enable --now wg-quick@warp
 
-    echo -e "WireGuard (Warp) installed successfully.\e[0m"
+if systemctl is-active --quiet wg-quick@warp; then
+    echo "Successful wairgard warp..."
 else
+    echo "Delete Ip6 & Check!!!!!!"
+    # اضافه کردن راه حل‌های مربوطه برای رفع ارور
+fi
+
+echo -e "WireGuard (Warp) installed successfully.\e[0m"
     # عدم نصب وارپ و اجرای مراحل بعدی
     echo -e "\e[1;31mSkipping WireGuard (Warp) installation.\e[0m"
     # TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
@@ -68,46 +74,55 @@ while true; do
     done
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;32mAdding required files..."
-    sudo mkdir -p /usr/local/share/xray/
-    sudo wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat
-    sudo wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
-    sudo wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
+    mkdir -p /usr/local/share/xray/ && \
+    wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat && \
+    wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
+    wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
+    
+    # بررسی موفقیت اجرای دستورات
+    if [ $? -eq 0 ]; then
+        echo -e "\e[1;32mRequired files added successfully.\e[0m"
+    else
+        echo -e "\e[1;31mError adding required files.\e[0m"
+        exit 1
+    fi
 
-    # نصب هسته و ادیتش
-    apt install wget unzip -y
-    mkdir -p /var/lib/marzban/xray-core
-    wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
-    unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
-    rm /var/lib/marzban/xray-core/Xray-linux-64.zip
+    # اضافه کردن دستورات مربوط به نصب هسته و ادیت هسته
+    echo -e "\e[1;32mInstalling and configuring kernel..."
+    sudo apt install wget unzip -y
+    sudo mkdir -p /var/lib/marzban/xray-core
+    sudo wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
+    
+    # بررسی موفقیت اجرای دستورات نصب هسته
+    if [ $? -eq 0 ]; then
+        sudo unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
+        sudo rm /var/lib/marzban/xray-core/Xray-linux-64.zip
+        echo -e "\e[1;32mKernel installed and configured successfully.\e[0m"
+    else
+        echo -e "\e[1;31mError installing kernel.\e[0m"
+        exit 1
+    fi
 
-    # TODO: اضافه کردن دستورات مربوط به نصب مرزبان نود
-    echo -e "\e[1;32mInstalling Marzban Node..."
-    sudo curl -fsSL https://get.docker.com | sh
-    sudo git clone https://github.com/Gozargah/Marzban-node
-    sudo cd Marzban-node
-    sudo docker compose up -d
-    sudo rm Marzban-node/docker-compose.yml
-    sudo wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
-    sudo cd Marzban-node
-    sudo docker compose down
-    sudo docker compose up --remove-orphans -d
-    sudo cat /var/lib/marzban-node/ssl_cert.pem
-
-    # پیام نهایی
-    echo -e "\e[1;32mInstallation completed successfully.\e[0m"
+    # اضافه کردن دستورات مربوط به نصب مرزبان نود
+    echo -e "\e[1;32mInstalling Marzban Node...\e[0m"
+    curl -fsSL https://get.docker.com | sh
+    git clone https://github.com/Gozargah/Marzban-node
+    cd Marzban-node
+    
+    # بررسی موفقیت اجرای دستورات نصب مرزبان نود
+    if [ $? -eq 0 ]; then
+        docker compose up -d
+        rm Marzban-node/docker-compose.yml
+        wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
+        cd Marzban-node
+        docker compose down
+        docker compose up --remove-orphans -d
+        cat /var/lib/marzban-node/ssl_cert.pem
+        echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
+    else
+        echo -e "\e[1;31mError installing Marzban Node.\e[0m"
+        exit 1
+    fi
+    
+    break
 done
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
