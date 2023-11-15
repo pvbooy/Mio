@@ -53,16 +53,17 @@ if [ "$install_warp" == "y" ]; then
 sudo systemctl enable --now wg-quick@warp
 
 if systemctl is-active --quiet wg-quick@warp; then
-    echo "Successful wairgard warp..."
+    echo "Successful Wireguard warp..."
 else
     echo "Delete Ip6 & Check!!!!!!"
     # اضافه کردن راه حل‌های مربوطه برای رفع ارور
 fi
 
 echo -e "WireGuard (Warp) installed successfully.\e[0m"
-    # عدم نصب وارپ و اجرای مراحل بعدی
-    echo -e "\e[1;31mSkipping WireGuard (Warp) installation.\e[0m"
-    # TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
+
+# عدم نصب وارپ و اجرای مراحل بعدی
+echo -e "\e[1;31mSkipping WireGuard (Warp) installation.\e[0m"
+# TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
 fi
 
 # جلوه چرخشی و اجرای دستورات مراحل بعدی
