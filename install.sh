@@ -99,25 +99,17 @@ if [ $? -eq 0 ]; then
     cd Marzban-node
     docker compose down
     docker compose up --remove-orphans -d
+    cat /var/lib/marzban-node/ssl_cert.pem
 
     # اضافه کردن شمارنده برای تعداد اجراها
     cat_attempts=0
 
     # افزودن حلقه برای بررسی وجود فایل با محدودیت تعداد
-    while [ ! -f Marzban-node ] && [ $cat_attempts -lt 10 ]; do
+    while [ ! -f /var/lib/marzban-node/ssl_cert.pem ] && [ $cat_attempts -lt 10 ]; do
         echo "Waiting for ssl_cert.pem to be available (Attempt: $((cat_attempts+1)))..."
         sleep 2
         ((cat_attempts++))
     done
-
-    # اگر فایل وجود دارد، ادامه دهید
-    if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
-        cat /var/lib/marzban-node/ssl_cert.pem
-        echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
-    else
-        echo -e "\e[1;31mError installing Marzban Node. Reached maximum attempts.\e[0m"
-        exit 1
-    fi
 else
     echo -e "\e[1;31mError installing Marzban Node.\e[0m"
     exit 1
