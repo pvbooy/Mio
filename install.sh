@@ -52,17 +52,18 @@ if [ "$install_warp" == "y" ]; then
     # فعال‌سازی سرویس WireGuard
     sudo systemctl enable --now wg-quick@warp
 
-if systemctl is-active --quiet wg-quick@warp; then
-    echo "Successful Wireguard warp..."
-else
-    echo "Delete Ip6 & Check!!!!!!"
-    # اضافه کردن راه حل‌های مربوطه برای رفع ارور
-fi
+    if systemctl is-active --quiet wg-quick@warp; then
+        echo "Successful Wireguard warp..."
+    else
+        echo "Delete Ip6 & Check!!!!!!"
+        # اضافه کردن راه حل‌های مربوطه برای رفع ارور
+    fi
 
     echo -e "WireGuard (Warp) installed successfully.\e[0m"
 else
     # عدم نصب وارپ و اجرای مراحل بعدی
     echo -e "\e[1;31mSkipping WireGuard (Warp) installation.\e[0m"
+    exit 0
     # TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
 fi
 
@@ -87,7 +88,6 @@ while true; do
         echo -e "\e[1;31mError adding required files.\e[0m"
         exit 1
     fi
-
     # اضافه کردن دستورات مربوط به نصب هسته و ادیت هسته
     echo -e "\e[1;32mInstalling and configuring kernel..."
     sudo apt install wget unzip -y
