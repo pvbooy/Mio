@@ -1,4 +1,4 @@
-#- @PvBoy/Boy
+#@PvBoy/Boy
 
 #!/bin/bash
 
