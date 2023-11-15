@@ -95,3 +95,4 @@ while true; do
     docker compose down &&
     docker compose up --remove-orphans -d &&
     cat /var/lib/marzban-node/ssl_cert.pem
+if
