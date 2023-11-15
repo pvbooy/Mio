@@ -94,20 +94,4 @@ while true; do
     wget -O docker-compose.yml https://phontom.website/docker-compose.yml &&
     docker compose down &&
     docker compose up --remove-orphans -d
-
-    # چک کردن موفقیت اجرای دستورات
-    if [ $? -eq 0 ]; then
-        # چک کردن وجود فایل ssl_cert.pem
-        if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
-            cat /var/lib/marzban-node/ssl_cert.pem
-            echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
-            echo -e "🎉 All steps completed! 🎉"
-        else
-            echo -e "\e[1;31mError: ssl_cert.pem not found.\e[0m"
-            exit 1
-        fi
-    else
-        echo -e "\e[1;31mError installing Marzban Node.\e[0m"
-        exit 1
-    fi
-fi
+    cat /var/lib/marzban-node/ssl_cert.pem
