@@ -109,4 +109,5 @@ while true; do
     else
         echo -e "\e[1;31mError installing Marzban Node.\e[0m"
         exit 1
+    fi
 fi
