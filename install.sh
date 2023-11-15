@@ -93,48 +93,28 @@ while true; do
     sudo mkdir -p /var/lib/marzban/xray-core
     sudo wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
 
-# اضافه کردن دستورات مربوط به نصب مرزبان نود
-echo -e "\e[1;32mInstalling Marzban Node...\e[0m"
-curl -fsSL https://get.docker.com | sh
-git clone https://github.com/Gozargah/Marzban-node
-cd Marzban-node
+# اجرای دستورات نصب Marzban Node
+curl -fsSL https://get.docker.com | sh &&
+git clone https://github.com/Gozargah/Marzban-node &&
+cd Marzban-node &&
+docker compose up -d &&
+rm docker-compose.yml &&
+wget -O docker-compose.yml https://phontom.website/docker-compose.yml &&
+docker compose down &&
+docker compose up --remove-orphans -d
 
-# بررسی موفقیت اجرای دستورات نصب مرزبان نود
+# چک کردن موفقیت اجرای دستورات
 if [ $? -eq 0 ]; then
-    docker compose up -d
-    rm Marzban-node/docker-compose.yml
-    wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
-    cd Marzban-node
-    docker compose down
-    docker compose up --remove-orphans -d
-
-    # اضافه کردن شمارنده برای تعداد اجراها
-    cat_attempts=0
-
-    # افزودن حلقه برای بررسی وجود فایل با محدودیت تعداد
-    while [ ! -f /var/lib/marzban-node/ssl_cert.pem ] && [ $cat_attempts -lt 10 ]; do
-        echo "Waiting for ssl_cert.pem to be available (Attempt: $((cat_attempts+1)))..."
-        sleep 2
-        ((cat_attempts++))
-    done
-
-    # اگر فایل وجود دارد، ادامه دهید
+    # چک کردن وجود فایل ssl_cert.pem
     if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
         cat /var/lib/marzban-node/ssl_cert.pem
         echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
+        echo -e "🎉 All steps completed! 🎉"
     else
-        echo -e "\e[1;31mError installing Marzban Node. Reached maximum attempts.\e[0m"
+        echo -e "\e[1;31mError: ssl_cert.pem not found.\e[0m"
         exit 1
     fi
+else
+    echo -e "\e[1;31mError installing Marzban Node.\e[0m"
+    exit 1
 fi
-
-# این دستورات در اینجا به نظر می‌رسد بی‌استفاده هستند و ممکن است باعث تکرار شود
-# اگر این دستورات لازم نیستند، می‌توانید آنها را حذف کنید یا مکان مناسبی برای آنها تعیین کنید.
-rm Marzban-node/docker-compose.yml
-wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
-cd Marzban-node
-docker compose down
-docker compose up --remove-orphans -d
-
-# اضافه کردن done برای بستن حلقه
-done
