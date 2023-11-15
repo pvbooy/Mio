@@ -1,4 +1,5 @@
 #@PvBoy
+# 2023/11/15 17:50
 
 #!/bin/bash
 
@@ -86,7 +87,6 @@ while true; do
     cd Marzban-node
     
 # بررسی موفقیت اجرای دستورات نصب مرزبان نود
-if [ $? -eq 0 ]; then
     docker compose up -d
     rm Marzban-node/docker-compose.yml
     wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
@@ -94,14 +94,6 @@ if [ $? -eq 0 ]; then
     docker compose down
     docker compose up --remove-orphans -d
     cat /var/lib/marzban-node/ssl_cert.pem
-
-else
-    echo -e "\e[1;31mError installing Marzban Node.\e[0m"
-    exit 1
-fi
-
-# اضافه کردن done برای بستن حلقه
-done
 
 echo -e «««««Successfull!!!»»»»»» :)
 echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
