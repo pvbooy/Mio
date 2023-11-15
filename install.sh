@@ -109,20 +109,35 @@ while true; do
     git clone https://github.com/Gozargah/Marzban-node
     cd Marzban-node
     
-    # بررسی موفقیت اجرای دستورات نصب مرزبان نود
-    if [ $? -eq 0 ]; then
-        docker compose up -d
-        rm Marzban-node/docker-compose.yml
-        wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
-        cd Marzban-node
-        docker compose down
-        docker compose up --remove-orphans -d
+# بررسی موفقیت اجرای دستورات نصب مرزبان نود
+if [ $? -eq 0 ]; then
+    docker compose up -d
+    rm Marzban-node/docker-compose.yml
+    wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
+    cd Marzban-node
+    docker compose down
+    docker compose up --remove-orphans -d
+
+    # اضافه کردن شمارنده برای تعداد اجراها
+    cat_attempts=0
+
+    # افزودن حلقه برای بررسی وجود فایل با محدودیت تعداد
+    while [ ! -f /var/lib/marzban-node/ssl_cert.pem ] && [ $cat_attempts -lt 10 ]; do
+        echo "Waiting for ssl_cert.pem to be available (Attempt: $((cat_attempts+1)))..."
+        sleep 2
+        ((cat_attempts++))
+    done
+
+    if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
         cat /var/lib/marzban-node/ssl_cert.pem
         echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
     else
-        echo -e "\e[1;31mError installing Marzban Node.\e[0m"
+        echo -e "\e[1;31mError installing Marzban Node. Reached maximum attempts.\e[0m"
         exit 1
     fi
-    
-    break
+else
+    echo -e "\e[1;31mError installing Marzban Node.\e[0m"
+    exit 1
+fi
+# اضافه کردن done برای بستن حلقه
 done
