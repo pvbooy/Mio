@@ -81,12 +81,9 @@ while true; do
     wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
 
 # اضافه کردن دستورات مربوط به نصب مرزبان نود
-    echo -e "\e[1;32mInstalling Marzban Node...\e[0m"
     curl -fsSL https://get.docker.com | sh
     git clone https://github.com/Gozargah/Marzban-node
     cd Marzban-node
-    
-# بررسی موفقیت اجرای دستورات نصب مرزبان نود
     docker compose up -d
     rm Marzban-node/docker-compose.yml
     wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
