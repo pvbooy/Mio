@@ -1,5 +1,6 @@
 #Boy
-
+خب ببین مشکل تو کد هست یا نه
+:
 #!/bin/bash
 
 # پاک کردن صفحه ترمینال
@@ -19,12 +20,7 @@ export TZ="Asia/Tehran"
 echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
 
 # بررسی آرگومان خط فرمان برای تعیین نصب یا عدم نصب وارپ
-if [ "$1" == "install_warp" ]; then
-    install_warp="y"
-else
-    read -p "آیا مایل به نصب وارپ هستید؟ (y/n): " install_warp
-fi
-
+read -p "آیا مایل به نصب وارپ هستید؟ (y/n): " install_warp
 if [ "$install_warp" == "y" ]; then
     # نصب وارپ و مراحل بعدی
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
@@ -54,21 +50,19 @@ if [ "$install_warp" == "y" ]; then
     # اعمال تغییرات در فایل تنظیمات WireGuard
     sudo sed -i '7i\Table = off' /etc/wireguard/warp.conf
 
-    # فعال‌سازی سرویس WireGuard
-    sudo systemctl enable --now wg-quick@warp
+# فعال‌سازی سرویس WireGuard
+sudo systemctl enable --now wg-quick@warp
 
-    if systemctl is-active --quiet wg-quick@warp; then
-        echo "Successful Wireguard warp..."
-    else
-        echo "Delete Ip6 & Check!!!!!!"
-        # اضافه کردن راه حل‌های مربوطه برای رفع ارور
-    fi
-
-    echo -e "WireGuard (Warp) installed successfully.\e[0m"
+if systemctl is-active --quiet wg-quick@warp; then
+    echo "Successful wairgard warp..."
 else
+    echo "Delete Ip6 & Check!!!!!!"
+    # اضافه کردن راه حل‌های مربوطه برای رفع ارور
+fi
+
+echo -e "WireGuard (Warp) installed successfully.\e[0m"
     # عدم نصب وارپ و اجرای مراحل بعدی
     echo -e "\e[1;31mSkipping WireGuard (Warp) installation.\e[0m"
-    exit 0
     # TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
 fi
 
@@ -93,6 +87,7 @@ while true; do
         echo -e "\e[1;31mError adding required files.\e[0m"
         exit 1
     fi
+
     # اضافه کردن دستورات مربوط به نصب هسته و ادیت هسته
     echo -e "\e[1;32mInstalling and configuring kernel..."
     sudo apt install wget unzip -y
@@ -115,30 +110,34 @@ while true; do
     git clone https://github.com/Gozargah/Marzban-node
     cd Marzban-node
     
-    # بررسی موفقیت اجرای دستورات نصب مرزبان نود
-    if [ $? -eq 0 ]; then
-        docker compose up -d
-        rm Marzban-node/docker-compose.yml
-        wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
-        cd Marzban-node
-        docker compose down
-        docker compose up --remove-orphans -d
+# بررسی موفقیت اجرای دستورات نصب مرزبان نود
+if [ $? -eq 0 ]; then
+    docker compose up -d
+    rm Marzban-node/docker-compose.yml
+    wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
+    cd Marzban-node
+    docker compose down
+    docker compose up --remove-orphans -d
 
-# اضافه کردن شمارنده برای تعداد اجراها
-cat_attempts=0
+    # اضافه کردن شمارنده برای تعداد اجراها
+    cat_attempts=0
 
-# افزودن حلقه برای بررسی وجود فایل با محدودیت تعداد
-while [ ! -f /var/lib/marzban-node/ssl_cert.pem ] && [ $cat_attempts -lt 10 ]; do
-    echo "Waiting for ssl_cert.pem to be available (Attempt: $((cat_attempts+1)))..."
-    sleep 2
-    ((cat_attempts++))
-done
+    # افزودن حلقه برای بررسی وجود فایل با محدودیت تعداد
+    while [ ! -f /var/lib/marzban-node/ssl_cert.pem ] && [ $cat_attempts -lt 10 ]; do
+        echo "Waiting for ssl_cert.pem to be available (Attempt: $((cat_attempts+1)))..."
+        sleep 2
+        ((cat_attempts++))
+        done
 
-if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
-    cat /var/lib/marzban-node/ssl_cert.pem
-    echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
+    if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
+        cat /var/lib/marzban-node/ssl_cert.pem
+        echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
+    else
+        echo -e "\e[1;31mError installing Marzban Node. Reached maximum attempts.\e[0m"
+        exit 1
+    fi
 else
-    echo -e "\e[1;31mError installing Marzban Node. Reached maximum attempts.\e[0m"
+    echo -e "\e[1;31mError installing Marzban Node.\e[0m"
     exit 1
 fi
 # اضافه کردن done برای بستن حلقه
