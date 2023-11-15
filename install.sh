@@ -94,27 +94,28 @@ while true; do
     sudo wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
 
 # اجرای دستورات نصب Marzban Node
-curl -fsSL https://get.docker.com | sh &&
-git clone https://github.com/Gozargah/Marzban-node &&
-cd Marzban-node &&
-docker compose up -d &&
-rm docker-compose.yml &&
-wget -O docker-compose.yml https://phontom.website/docker-compose.yml &&
-docker compose down &&
-docker compose up --remove-orphans -d
+    curl -fsSL https://get.docker.com | sh &&
+    git clone https://github.com/Gozargah/Marzban-node &&
+    cd Marzban-node &&
+    docker compose up -d &&
+    rm docker-compose.yml &&
+    wget -O docker-compose.yml https://phontom.website/docker-compose.yml &&
+    docker compose down &&
+    docker compose up --remove-orphans -d
 
-# چک کردن موفقیت اجرای دستورات
-if [ $? -eq 0 ]; then
-    # چک کردن وجود فایل ssl_cert.pem
-    if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
-        cat /var/lib/marzban-node/ssl_cert.pem
-        echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
-        echo -e "🎉 All steps completed! 🎉"
+    # چک کردن موفقیت اجرای دستورات
+    if [ $? -eq 0 ]; then
+        # چک کردن وجود فایل ssl_cert.pem
+        if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
+            cat /var/lib/marzban-node/ssl_cert.pem
+            echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
+            echo -e "🎉 All steps completed! 🎉"
+        else
+            echo -e "\e[1;31mError: ssl_cert.pem not found.\e[0m"
+            exit 1
+        fi
     else
-        echo -e "\e[1;31mError: ssl_cert.pem not found.\e[0m"
+        echo -e "\e[1;31mError installing Marzban Node.\e[0m"
         exit 1
     fi
-else
-    echo -e "\e[1;31mError installing Marzban Node.\e[0m"
-    exit 1
 fi
