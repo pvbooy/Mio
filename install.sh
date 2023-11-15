@@ -52,12 +52,12 @@ if [ "$install_warp" == "y" ]; then
     # فعال‌سازی سرویس WireGuard
     sudo systemctl enable --now wg-quick@warp
 
-    if systemctl is-active --quiet wg-quick@warp; then
-        echo "Successful Wireguard warp..."
-    else
-        echo "Delete Ip6 & Check!!!!!!"
-        # اضافه کردن راه حل‌های مربوطه برای رفع ارور
-    fi
+if systemctl is-active --quiet wg-quick@warp; then
+    echo "Successful Wireguard warp..."
+else
+    echo "Delete Ip6 & Check!!!!!!"
+    # اضافه کردن راه حل‌های مربوطه برای رفع ارور
+fi
 
     echo -e "WireGuard (Warp) installed successfully.\e[0m"
 else
