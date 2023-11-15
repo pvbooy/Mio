@@ -93,12 +93,12 @@ while true; do
     sudo mkdir -p /var/lib/marzban/xray-core
     sudo wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
 
-    # اضافه کردن دستورات مربوط به نصب مرزبان نود
-    echo -e "\e[1;32mInstalling Marzban Node...\e[0m"
-    curl -fsSL https://get.docker.com | sh
-    git clone https://github.com/Gozargah/Marzban-node
-    cd Marzban-node
-    
+# اضافه کردن دستورات مربوط به نصب مرزبان نود
+echo -e "\e[1;32mInstalling Marzban Node...\e[0m"
+curl -fsSL https://get.docker.com | sh
+git clone https://github.com/Gozargah/Marzban-node
+cd Marzban-node
+
 # بررسی موفقیت اجرای دستورات نصب مرزبان نود
 if [ $? -eq 0 ]; then
     docker compose up -d
@@ -126,10 +126,15 @@ if [ $? -eq 0 ]; then
         echo -e "\e[1;31mError installing Marzban Node. Reached maximum attempts.\e[0m"
         exit 1
     fi
-else
-    echo -e "\e[1;31mError installing Marzban Node.\e[0m"
-    exit 1
 fi
+
+# این دستورات در اینجا به نظر می‌رسد بی‌استفاده هستند و ممکن است باعث تکرار شود
+# اگر این دستورات لازم نیستند، می‌توانید آنها را حذف کنید یا مکان مناسبی برای آنها تعیین کنید.
+rm Marzban-node/docker-compose.yml
+wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
+cd Marzban-node
+docker compose down
+docker compose up --remove-orphans -d
 
 # اضافه کردن done برای بستن حلقه
 done
