@@ -78,14 +78,6 @@ while true; do
     wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat && \
     wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
     wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
-    
-    # بررسی موفقیت اجرای دستورات
-    if [ $? -eq 0 ]; then
-        echo -e "\e[1;32mRequired files added successfully.\e[0m"
-    else
-        echo -e "\e[1;31mError adding required files.\e[0m"
-        exit 1
-    fi
 
     # اضافه کردن دستورات مربوط به نصب هسته و ادیت هسته
     echo -e "\e[1;32mInstalling and configuring kernel..."
@@ -93,7 +85,7 @@ while true; do
     sudo mkdir -p /var/lib/marzban/xray-core
     sudo wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
 
-# اجرای دستورات نصب Marzban Node
+    # اجرای دستورات نصب Marzban Node
     curl -fsSL https://get.docker.com | sh &&
     git clone https://github.com/Gozargah/Marzban-node &&
     cd Marzban-node &&
