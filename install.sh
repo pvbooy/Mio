@@ -79,12 +79,6 @@ while true; do
     wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
     wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
 
-    # اضافه کردن دستورات مربوط به نصب هسته و ادیت هسته
-    echo -e "\e[1;32mInstalling and configuring kernel..."
-    sudo apt install wget unzip -y
-    sudo mkdir -p /var/lib/marzban/xray-core
-    sudo wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
-
 # اضافه کردن دستورات مربوط به نصب مرزبان نود
     echo -e "\e[1;32mInstalling Marzban Node...\e[0m"
     curl -fsSL https://get.docker.com | sh
@@ -101,15 +95,6 @@ if [ $? -eq 0 ]; then
     docker compose up --remove-orphans -d
     cat /var/lib/marzban-node/ssl_cert.pem
 
-    # اضافه کردن شمارنده برای تعداد اجراها
-    cat_attempts=0
-
-    # افزودن حلقه برای بررسی وجود فایل با محدودیت تعداد
-    while [ ! -f Marzban-node/xray.py ] && [ $cat_attempts -lt 10 ]; do
-        echo "Waiting for ssl_cert.pem to be available (Attempt: $((cat_attempts+1)))..."
-        sleep 2
-        ((cat_attempts++))
-    done
 else
     echo -e "\e[1;31mError installing Marzban Node.\e[0m"
     exit 1
