@@ -19,8 +19,8 @@ export TZ="Asia/Tehran"
 echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
 
 # بررسی آرگومان خط فرمان برای تعیین نصب یا عدم نصب وارپ
-read -p آیا مایل به نصب وارپ هستید؟ (y/n):  install_warp
-if [ "$install_warp" == "y" ]; then
+read -p "آیا مایل به نصب وارپ هستید؟ (y/n): " install_warp
+if [ $install_warp == "y" ]; then
     # نصب وارپ و مراحل بعدی
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
 
