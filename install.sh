@@ -26,9 +26,9 @@ if [ $install_warp == "y" ]; then
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
 
     # افزودن مخازن APT
-    sudo add-apt-repository main
-    sudo add-apt-repository universe
-    sudo add-apt-repository restricted
+    sudo add-apt-repository main -y
+    sudo add-apt-repository universe -y
+    sudo add-apt-repository restricted -y
     sudo add-apt-repository multiverse -y
 
     # نصب ابزارهای WireGuard و resolvconf
