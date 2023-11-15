@@ -97,3 +97,5 @@ while true; do
 
 echo -e «««««Successfull!!!»»»»»» :)
 echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
+
+done
