@@ -118,6 +118,7 @@ if [ $? -eq 0 ]; then
         ((cat_attempts++))
     done
 
+    # اگر فایل وجود دارد، ادامه دهید
     if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
         cat /var/lib/marzban-node/ssl_cert.pem
         echo -e "\e[1;32mMarzban Node installed successfully.\e[0m"
