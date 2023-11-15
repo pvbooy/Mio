@@ -19,7 +19,7 @@ export TZ="Asia/Tehran"
 echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
 
 # بررسی آرگومان خط فرمان برای تعیین نصب یا عدم نصب وارپ
-read -p "آیا مایل به نصب وارپ هستید؟ (y/n): " install_warp
+read -p آیا مایل به نصب وارپ هستید؟ (y/n):  install_warp
 if [ $install_warp == "y" ]; then
     # نصب وارپ و مراحل بعدی
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
@@ -92,16 +92,6 @@ while true; do
     sudo apt install wget unzip -y
     sudo mkdir -p /var/lib/marzban/xray-core
     sudo wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
-    
-    # بررسی موفقیت اجرای دستورات نصب هسته
-    if [ $? -eq 0 ]; then
-        sudo unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
-        sudo rm /var/lib/marzban/xray-core/Xray-linux-64.zip
-        echo -e "\e[1;32mKernel installed and configured successfully.\e[0m"
-    else
-        echo -e "\e[1;31mError installing kernel.\e[0m"
-        exit 1
-    fi
 
     # اضافه کردن دستورات مربوط به نصب مرزبان نود
     echo -e "\e[1;32mInstalling Marzban Node...\e[0m"
@@ -126,7 +116,7 @@ if [ $? -eq 0 ]; then
         echo "Waiting for ssl_cert.pem to be available (Attempt: $((cat_attempts+1)))..."
         sleep 2
         ((cat_attempts++))
-        done
+    done
 
     if [ -f /var/lib/marzban-node/ssl_cert.pem ]; then
         cat /var/lib/marzban-node/ssl_cert.pem
@@ -139,5 +129,6 @@ else
     echo -e "\e[1;31mError installing Marzban Node.\e[0m"
     exit 1
 fi
+
 # اضافه کردن done برای بستن حلقه
 done
