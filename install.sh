@@ -72,6 +72,19 @@ fi
     wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
     wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
 
+# نصب وابستگی‌ها
+apt install wget unzip -y
+
+# ایجاد دایرکتوری مربوطه
+mkdir -p /var/lib/marzban/xray-core
+
+# دانلود و استخراج فایل Xray
+wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
+unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
+
+# حذف فایل فشرده دانلود شده
+rm /var/lib/marzban/xray-core/Xray-linux-64.zip
+
 # اضافه کردن دستورات مربوط به نصب مرزبان نود
     curl -fsSL https://get.docker.com | sh
     git clone https://github.com/Gozargah/Marzban-node
