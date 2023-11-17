@@ -90,7 +90,7 @@ rm /var/lib/marzban/xray-core/Xray-linux-64.zip
     curl -fsSL https://get.docker.com | sh
     git clone https://github.com/Gozargah/Marzban-node
     (cd ~/Marzban-node && docker compose up -d)
-    rm Marzban-node/docker-compose.yml
-    wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml
-    (cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
+    rm Marzban-node/docker-compose.yml ;
+    wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml ;
+    (cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d) ;
     cat /var/lib/marzban-node/ssl_cert.pem
