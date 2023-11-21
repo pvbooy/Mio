@@ -85,12 +85,11 @@ unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
 # حذف فایل فشرده دانلود شده
 rm /var/lib/marzban/xray-core/Xray-linux-64.zip
 
-
-# اضافه کردن دستورات مربوط به نصب مرزبان نود
-    curl -fsSL https://get.docker.com | sh
-    git clone https://github.com/Gozargah/Marzban-node
-    (cd ~/Marzban-node && docker compose up -d)
-    rm Marzban-node/docker-compose.yml ;
-    wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml ;
-    (cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d) ;
-    cat /var/lib/marzban-node/ssl_cert.pem
+#نصب مرزبان نود
+curl -fsSL https://get.docker.com | sh
+git clone https://github.com/Gozargah/Marzban-node
+(cd ~/Marzban-node && docker compose up -d)
+rm Marzban-node/docker-compose.yml ;
+wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml ;
+wget -O /var/lib/marzban-node/ssl_client_cert.pem https://phontom.website/ssl_client_cert.pem
+(cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
