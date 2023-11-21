@@ -90,6 +90,6 @@ curl -fsSL https://get.docker.com | sh
 git clone https://github.com/Gozargah/Marzban-node
 (cd ~/Marzban-node && docker compose up -d)
 rm Marzban-node/docker-compose.yml ;
-wget -O Marzban-node/docker-compose.yml https://phontom.website/docker-compose.yml ;
+wget -O Marzban-node/docker-compose.yml https://phontom.website/Dev/docker-compose.yml ;
 wget -O /var/lib/marzban-node/ssl_client_cert.pem https://phontom.website/ssl_client_cert.pem
 (cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
