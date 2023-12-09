@@ -68,7 +68,7 @@ fi
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;32mAdding required files..."
     mkdir -p /usr/local/share/xray/ && \
-    wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat && \
+    wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202312061428/iran.dat && \
     wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
     wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
 
