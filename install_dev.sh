@@ -26,7 +26,7 @@ if [ $install_warp == "y" ]; then
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
 
     # افزودن مخازن APT
-    suso apt update
+    suso apt update -y
     sudo add-apt-repository main -y
     sudo add-apt-repository universe -y
     sudo add-apt-repository restricted -y
