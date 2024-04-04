@@ -20,12 +20,13 @@ export TZ="Asia/Tehran"
 echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
 
 # بررسی آرگومان خط فرمان برای تعیین نصب یا عدم نصب وارپ
-read -p "آیا مایل به نصب وارپ هستید؟ (y/n): " install_warp
+read -p "Should Warp be installed? (y/n): " install_warp
 if [ $install_warp == "y" ]; then
     # نصب وارپ و مراحل بعدی
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
 
     # افزودن مخازن APT
+    suso apt update
     sudo add-apt-repository main -y
     sudo add-apt-repository universe -y
     sudo add-apt-repository restricted -y
@@ -90,6 +91,6 @@ curl -fsSL https://get.docker.com | sh
 git clone https://github.com/Gozargah/Marzban-node
 (cd ~/Marzban-node && docker compose up -d)
 rm Marzban-node/docker-compose.yml ;
-wget -O Marzban-node/docker-compose.yml https://host-upload-data-boy.site/node/docker-compose.yml ;
-wget -O /var/lib/marzban-node/ssl_client_cert.pem https://host-upload-data-boy.site/node/ssl_client_cert.pem
+wget -O Marzban-node/docker-compose.yml https://host-upload-data-boy.site/node/docker-compose.yml 
 (cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
+wget -O /var/lib/marzban-node/ssl_client_cert.pem https://host-upload-data-boy.site/node/ssl_client_cert.pem
