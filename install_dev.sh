@@ -59,17 +59,19 @@ if [ $install_warp == "y" ]; then
     # اعمال تغییرات در فایل تنظیمات WireGuard
     sudo sed -i '7i\Table = off' /etc/wireguard/warp.conf
 
-# فعال‌سازی سرویس WireGuard
-sudo systemctl enable --now wg-quick@warp
+    # فعال‌سازی سرویس WireGuard
+    sudo systemctl enable --now wg-quick@warp
 
-if systemctl is-active --quiet wg-quick@warp; then
-    echo -e "\e[32m+++Successful wairgard warp...\e[0m"
-else
-    echo -e "\e[31mEror - Warp service failed to run!\e[0m"
-    echo -e "://////"
-    systemctl status wg-quick@warp
-    exit 1
-fi
+    if systemctl is-active --quiet wg-quick@warp; then
+        echo -e "\e[32m+++Successful wairgard warp...\e[0m"
+    else
+        echo -e "\e[31mEror - Warp service failed to run!\e[0m"
+        echo -e "://////"
+        systemctl status wg-quick@warp
+        exit 1
+    fi
+
+    
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;31m+Adding required files....\e[0m"
     mkdir -p /usr/local/share/xray/ && \
