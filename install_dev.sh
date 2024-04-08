@@ -20,8 +20,9 @@ export TZ="Asia/Tehran"
 echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
 
 # بررسی آرگومان خط فرمان برای تعیین نصب یا عدم نصب وارپ
-read -p "Should Warp be installed? (y/n): " -i install_warp
-if [ "$install_warp" == "y" ] || [ "$install_warp" == "Y" ]; then
+read -p "Should Warp be installed? (y/n): " install_warp
+install_warp=$(echo "$install_warp" | tr '[:upper:]' '[:lower:]')
+if [ "$install_warp" == "y" ]; then
     # نصب وارپ و مراحل بعدی
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
 
@@ -66,13 +67,9 @@ if systemctl is-active --quiet wg-quick@warp; then
     echo -e "\e[32m+++Successful wairgard warp...\e[0m"
 else
     echo -e "\e[31mEror - Warp service failed to run!\e[0m"
-    # اینجا میگه نصب نشد
-fi
-
-echo -e "://////"
-    #  میره تو وضعیتش که ارور رو ببینی و از اسکریپت خارج میشه
+    echo -e "://////"
     systemctl status wg-quick@warp
-    exit
+    exit 1
 fi
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;31m+Adding required files....\e[0m"
