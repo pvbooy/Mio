@@ -62,17 +62,16 @@ if [ $install_warp == "Yy" ]; then
 sudo systemctl enable --now wg-quick@warp
 
 if systemctl is-active --quiet wg-quick@warp; then
-    echo "Successful wairgard warp..."
+    echo -e "\e[32m+++Successful wairgard warp...\e[0m"
 else
-    echo "Eror -Warp service failed to run!"
-    exit
-    # اضافه کردن راه حل‌های مربوطه برای رفع ارور
+    echo -e "\e[31mEror - Warp service failed to run!\e[0m"
+    # اینجا میگه نصب نشد
 fi
 
-echo -e "WireGuard (Warp) installed +++successfully+++.\e[0m"
-    # عدم نصب وارپ و اجرای مراحل بعدی
-    echo -e "\e[1;31mWireGuard (Warp) ===installation===.\e[0m"
-    # TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
+echo -e "://////"
+    # اینجا میره تو وضعیتش که ارور رو ببینی و از اسکریپت خروج میشه
+    systemctl status wg-quick@warp
+    exit
 fi
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;31m+Adding required files....\e[0m"
