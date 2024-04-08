@@ -29,9 +29,10 @@ if [ $install_warp == "y" ]; then
     sudo apt update -y
 
     # رفع خالی شدن nameserver
-    rm /etc/resolv.conf
-    sudo touch /etc/resolv.conf
-    echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf
+    rm /etc/resolv.conf && \
+    sudo touch /etc/resolv.conf && \
+    echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf && \
+
 
     # افزودن مخازن APT
     sudo add-apt-repository main -y
