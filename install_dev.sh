@@ -71,8 +71,7 @@ fi
 
 echo -e "://////"
     #  میره تو وضعیتش که ارور رو ببینی و از اسکریپت خارج میشه
-    systemctl status wg-quick@warp
-        exit
+    echo -e "\e[31mEror - Warp service failed to run!\e[0m"
     fi
 
     
