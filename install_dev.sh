@@ -62,13 +62,17 @@ if [ $install_warp == "y" ]; then
     # فعال‌سازی سرویس WireGuard
     sudo systemctl enable --now wg-quick@warp
 
-    if systemctl is-active --quiet wg-quick@warp; then
-        echo -e "\e[32m+++Successful wairgard warp...\e[0m"
-    else
-        echo -e "\e[31mEror - Warp service failed to run!\e[0m"
-        echo -e "://////"
-        systemctl status wg-quick@warp
-        exit 1
+if systemctl is-active --quiet wg-quick@warp; then
+    echo -e "\e[32m+++Successful wairgard warp...\e[0m"
+else
+    echo -e "\e[31mEror - Warp service failed to run!\e[0m"
+    # اینجا میگه نصب نشد
+fi
+
+echo -e "://////"
+    #  میره تو وضعیتش که ارور رو ببینی و از اسکریپت خارج میشه
+    systemctl status wg-quick@warp
+        exit
     fi
 
     
