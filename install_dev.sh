@@ -9,7 +9,7 @@ clear
 # اضافه کردن جلوه‌های بصری به پیام‌های سازنده
 echo -e "\e[1;32m***********************"
 echo -e "***********************"
-echo -e "******Made by Boy******"
+echo -e "**********Boy**********"
 echo -e "***********************"
 echo -e "***********************\e[0m"
 
@@ -21,12 +21,19 @@ echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
 
 # بررسی آرگومان خط فرمان برای تعیین نصب یا عدم نصب وارپ
 read -p "Should Warp be installed? (y/n): " install_warp
-if [ $install_warp == "y" ]; then
+if [ $install_warp == "Yy" ]; then
     # نصب وارپ و مراحل بعدی
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
 
-    # افزودن مخازن APT
+    # اپدیت
     sudo apt update -y
+
+    # رفع خالی شدن nameserver
+    rm /etc/resolv.conf
+    sudo touch /etc/resolv.conf
+    echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf
+
+    # افزودن مخازن APT
     sudo add-apt-repository main -y
     sudo add-apt-repository universe -y
     sudo add-apt-repository restricted -y
@@ -57,23 +64,25 @@ sudo systemctl enable --now wg-quick@warp
 if systemctl is-active --quiet wg-quick@warp; then
     echo "Successful wairgard warp..."
 else
-    echo "Delete Ip6 & Check!!!!!!"
+    echo "Eror -Warp service failed to run!"
+    exit
     # اضافه کردن راه حل‌های مربوطه برای رفع ارور
 fi
 
-echo -e "WireGuard (Warp) installed successfully.\e[0m"
+echo -e "WireGuard (Warp) installed +++successfully+++.\e[0m"
     # عدم نصب وارپ و اجرای مراحل بعدی
-    echo -e "\e[1;31mSkipping WireGuard (Warp) installation.\e[0m"
+    echo -e "\e[1;31mWireGuard (Warp) ===installation===.\e[0m"
     # TODO: اضافه کردن دستورات مربوط به مراحل بعدی بدون نصب وارپ
 fi
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
-    echo -e "\e[1;32mAdding required files..."
+    echo -e "\e[1;31m+Adding required files....\e[0m"
     mkdir -p /usr/local/share/xray/ && \
     wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat && \
     wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
     wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
 
 # نصب وابستگی‌ها
+echo -e "\e[1;31m*Doing the work of core version (1.8.1)\e[0m"
 apt install wget unzip -y
 
 # ایجاد دایرکتوری مربوطه
@@ -87,6 +96,7 @@ unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
 rm /var/lib/marzban/xray-core/Xray-linux-64.zip
 
 #نصب مرزبان نود
+echo -e "\e[1;31m$Install marzban node + Docker/\e[0m"
 curl -fsSL https://get.docker.com | sh
 git clone https://github.com/Gozargah/Marzban-node
 (cd ~/Marzban-node && docker compose up -d)
@@ -94,3 +104,6 @@ rm Marzban-node/docker-compose.yml ;
 wget -O Marzban-node/docker-compose.yml https://host-upload-data-boy.site/node/docker-compose.yml 
 (cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
 wget -O /var/lib/marzban-node/ssl_client_cert.pem https://host-upload-data-boy.site/node/ssl_client_cert.pem
+
+# تموم
+echo -e "\e[94mFinish (⁠✯⁠ᴗ⁠✯⁠)\e[0m"
