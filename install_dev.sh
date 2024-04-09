@@ -75,14 +75,14 @@ fi
 
 
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
-    echo -e "\e[1;31m+Adding required files....\e[0m"
+    echo -e "\e[1;31m +Adding required files....\e[0m"
     mkdir -p /usr/local/share/xray/ && \
     wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat && \
     wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
     wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
 
 # نصب وابستگی‌ها
-echo -e "\e[1;31m*Doing the work of core version (1.8.1)\e[0m"
+echo -e "\e[1;31m -Doing the work of core version (1.8.1)\e[0m"
 apt install wget unzip -y
 
 # ایجاد دایرکتوری مربوطه
@@ -96,7 +96,7 @@ unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
 rm /var/lib/marzban/xray-core/Xray-linux-64.zip
 
 #نصب مرزبان نود
-echo -e "\e[1;31m$Install marzban node + Docker/\e[0m"
+echo -e "\e[1;31m -Install Marzban node + Docker\e[0m"
 curl -fsSL https://get.docker.com | sh
 git clone https://github.com/Gozargah/Marzban-node
 (cd ~/Marzban-node && docker compose up -d)
