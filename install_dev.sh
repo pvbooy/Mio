@@ -33,7 +33,6 @@ if [ $install_warp == "y" ]; then
     sudo touch /etc/resolv.conf && \
     echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf && \
 
-
     # افزودن مخازن APT
     sudo add-apt-repository main -y
     sudo add-apt-repository universe -y
@@ -60,19 +59,19 @@ if [ $install_warp == "y" ]; then
     sudo sed -i '7i\Table = off' /etc/wireguard/warp.conf
 
     # فعال‌سازی سرویس WireGuard
-    sudo systemctl enable --now wg-quick@warp
+    sudo systemctl enable --now wg-quick@warp.service
 
-if systemctl is-active --quiet wg-quick@warp; then
-    echo -e "\e[32m+++Successful wairgard warp...\e[0m"
-else
-    echo -e "\e[31mEror - Warp service failed to run!\e[0m"
-    # اینجا میگه نصب نشد
-fi
-
-echo -e "://////"
-    #  میره تو وضعیتش که ارور رو ببینی و از اسکریپت خارج میشه
-    echo -e "\e[31mEror - Warp service failed to run!\e[0m"
+    if systemctl is-active --quiet wg-quick@warp.service; then
+        echo -e "\e[32m+++Successful wairgard warp...\e[0m"
+    else
+        echo -e "\e[31mError - Warp service failed to run!\e[0m"
+        # اینجا میگه نصب نشد
     fi
+else
+    echo -e "://////"
+    #  میره تو وضعیتش که ارور رو ببینی و از اسکریپت خارج میشه
+    echo -e "\e[31mError - Warp service failed to run!\e[0m"
+fi
 
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;31m+Adding required files....\e[0m"
