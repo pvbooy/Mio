@@ -65,13 +65,14 @@ if [ $install_warp == "y" ]; then
         echo -e "\e[32m+++Successful wairgard warp...\e[0m"
     else
         echo -e "\e[31mError - Warp service failed to run!\e[0m"
-        # اینجا میگه نصب نشد
+        # نمایش وضعیت سرویس در صورت عدم موفقیت
+        systemctl status wg-quick@warp
     fi
 else
-    echo -e "://////"
     #  میره تو وضعیتش که ارور رو ببینی و از اسکریپت خارج میشه
-    echo -e "\e[31mError - Warp service failed to run!\e[0m"
+    echo -e ""
 fi
+
 
     # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
     echo -e "\e[1;31m+Adding required files....\e[0m"
