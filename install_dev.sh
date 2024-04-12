@@ -102,6 +102,8 @@ while [[ -z "$INSTALL_VERSION" ]]; do
     fi
 done
 
+apt update -y > /dev/null 2>&1
+apt install sudo -y > /dev/null 2>&1
 apt-get install git -y > /dev/null 2>&1
 
 cd "$HOME" || exit
