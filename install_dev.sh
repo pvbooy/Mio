@@ -1,10 +1,7 @@
-#@PvBoy
-# 2023/11/15 17:50
-
 #!/bin/bash
 
 # پاک کردن صفحه ترمینال
-clear
+#clear
 
 # اضافه کردن جلوه‌های بصری به پیام‌های سازنده
 echo -e "\e[1;32m***********************"
@@ -21,12 +18,14 @@ echo -e "\e[1;36m$(date "+%Y/%m/%d|%H:%M:%S")\e[0m"
 
 # بررسی آرگومان خط فرمان برای تعیین نصب یا عدم نصب وارپ
 read -p "Should Warp be installed? (y/n): " install_warp
-if [ $install_warp == "y" ]; then
+if [[ "$install_warp" == "y" ]] || [[ "$install_warp" == "Y" ]]; then
     # نصب وارپ و مراحل بعدی
     echo -e "\e[1;32mInstalling WireGuard (Warp)..."
 
     # اپدیت
-    sudo apt update -y
+    echo "running 'apt update' ..."
+    sudo apt update -y > /dev/null 2>&1
+    echo "update done"
 
     # رفع خالی شدن nameserver
     rm /etc/resolv.conf && \
@@ -40,9 +39,12 @@ if [ $install_warp == "y" ]; then
     sudo add-apt-repository multiverse -y
 
     # نصب ابزارهای WireGuard و resolvconf
-    sudo apt install wireguard-dkms wireguard-tools resolvconf -y
+    echo "installing 'wireguard' ..."
+    sudo apt install wireguard-dkms wireguard-tools resolvconf -y > /dev/null 2>&1
+    echo "wireguard installed"
 
     # دانلود و نصب wgcf
+    echo "installing 'wgcf'..."
     wget https://github.com/ViRb3/wgcf/releases/download/v2.2.18/wgcf_2.2.18_linux_amd64
     mv wgcf_2.2.18_linux_amd64 /usr/bin/wgcf
     chmod +x /usr/bin/wgcf
@@ -73,37 +75,100 @@ else
     echo -e ""
 fi
 
+while [[ -z "$INSTALL_TYPE" ]]; do
+    echo "Install type? (d|m): "
+    read -r INSTALL_TYPE
+    if [[ $INSTALL_TYPE == $'\0' ]]; then
+        echo "Invalid input. Chat id cannot be empty."
+        unset INSTALL_TYPE
+     elif [[ ! $INSTALL_TYPE =~ ^[md]$ ]]; then
+        echo "${INSTALL_TYPE} is not a valid option. Please choose m or d."
+        unset xmh
+    fi
+done
 
-    # TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
-    echo -e "\e[1;31m +Adding required files....\e[0m"
-    mkdir -p /usr/local/share/xray/ && \
-    wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat && \
-    wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
-    wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
+VERSION=""
+while [[ -z "$INSTALL_VERSION" ]]; do
+    echo "Version: "
+    read -r INSTALL_VERSION
+    if [[ $INSTALL_VERSION == $'\0' ]]; then
+      break
+    elif [[ ! $INSTALL_VERSION =~ ^v\d+\.\d+\.\d+$ ]]; then
+        echo "Error: Invalid version number format. Please use format like 'v1.8.1'."
+        unset INSTALL_VERSION
+    else
+      VERSION="--version $INSTALL_VERSION"
+    fi
+done
 
-# نصب وابستگی‌ها
-echo -e "\e[1;31m -Doing the work of core version (1.8.1)\e[0m"
-apt install wget unzip -y
 
-# ایجاد دایرکتوری مربوطه
-mkdir -p /var/lib/marzban/xray-core
+cd "$HOME" || exit
+git clone https://github.com/Gozargah/Marzban-node 2>&1
 
-# دانلود و استخراج فایل Xray
-wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
-unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
+if [[ $INSTALL_TYPE = "m" ]]; then
+    SERVICE_NAME="marzban-node"
+    SERVICE_DOCUMENTATION="https://t.me/AC_Lover"
+    MAIN_PY_PATH="$HOME/Marzban-node/main.py"
+    SERVICE_FILE="/etc/systemd/system/$SERVICE_NAME.service"
+    cat >$SERVICE_FILE <<EOF
+[Unit]
+Description=$SERVICE_DESCRIPTION
+Documentation=$SERVICE_DOCUMENTATION
+After=network.target nss-lookup.target
 
-# حذف فایل فشرده دانلود شده
-rm /var/lib/marzban/xray-core/Xray-linux-64.zip
+[Service]
+Restart=on-failure
+ExecStart=/usr/bin/env python3 $MAIN_PY_PATH
+WorkingDirectory=$HOME/Marzban-node
 
-#نصب مرزبان نود
+[Install]
+WantedBy=multi-user.target
+EOF
+
+echo "installing Xray"
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install "$VERSION"  > /dev/null 2>&1
+echo "install Xray done"
+
+wget -O "$HOME"/Marzban-node/.env https://host-upload-data-boy.site/node/.env
+
+systemctl daemon-reload
+
+sudo systemctl enable "$SERVICE_NAME".service
+
+sudo systemctl start "$SERVICE_NAME".service
+
+echo "Service file created at: $SERVICE_FILE"
+
+
+
+else
+echo "installing Xray"
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install "$VERSION" --without-logfiles  > /dev/null 2>&1
+echo "install Xray done"
+service xray.service stop
+rm /etc/systemd/system/xray.service
+rm /etc/systemd/system/xray@.service
+systemctl daemon-reload
+
+mkdir -p /var/lib/marzban-node
+
+cp /usr/local/bin/xray /var/lib/marzban-node/xray
+
 echo -e "\e[1;31m -Install Marzban node + Docker\e[0m"
-curl -fsSL https://get.docker.com | sh
-git clone https://github.com/Gozargah/Marzban-node
-(cd ~/Marzban-node && docker compose up -d)
-rm Marzban-node/docker-compose.yml ;
-wget -O Marzban-node/docker-compose.yml https://host-upload-data-boy.site/node/docker-compose.yml 
-(cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
+curl -fsSL https://get.docker.com | sh > /dev/null 2>&1
+
+(cd "$HOME"/Marzban-node && docker compose up -d)
+rm "$HOME"/Marzban-node/docker-compose.yml
+wget -O "$HOME"/Marzban-node/docker-compose.yml https://host-upload-data-boy.site/node/docker-compose.yml
 wget -O /var/lib/marzban-node/ssl_client_cert.pem https://host-upload-data-boy.site/node/ssl_client_cert.pem
+(cd "$HOME"/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
+
+fi
+
+
+# TODO: اضافه کردن دستورات مربوط به اضافه کردن فایل‌های مورد نیاز
+echo -e "\e[1;31m +Adding required files....\e[0m"
+wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/download/202308070029/iran.dat
 
 # تموم
 echo -e "\e[94mFinish (⁠✯⁠ᴗ⁠✯⁠)\e[0m"
