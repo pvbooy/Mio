@@ -98,12 +98,14 @@ while [[ -z "$INSTALL_VERSION" ]]; do
         unset INSTALL_VERSION
     else
       VERSION="--version $INSTALL_VERSION"
+      break
     fi
 done
 
+apt-get install git -y > /dev/null 2>&1
 
 cd "$HOME" || exit
-git clone https://github.com/Gozargah/Marzban-node 2>&1
+git clone https://github.com/Gozargah/Marzban-node > /dev/null 2>&1
 
 if [[ $INSTALL_TYPE = "m" ]]; then
     SERVICE_NAME="marzban-node"
