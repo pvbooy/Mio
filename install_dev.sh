@@ -89,14 +89,17 @@ done
 
 VERSION=""
 while [[ -z "$INSTALL_VERSION" ]]; do
-  echo "Version: "
-  read -r INSTALL_VERSION
-  if [[ ! $INSTALL_VERSION =~ ^v\d+\.\d+\.\d+$ ]]; then
-    echo "Error: Invalid version number format. Please use format like 'v1.8.1'."
-    unset INSTALL_VERSION
-  else
-    VERSION="--version $INSTALL_VERSION"
-  fi
+    echo "Version: "
+    read -r INSTALL_VERSION
+    if [[ $INSTALL_VERSION == $'\0' ]]; then
+      break
+    elif [[ ! $INSTALL_VERSION =~ ^v\d+\.\d+\.\d+$ ]]; then
+        echo "Error: Invalid version number format. Please use format like 'v1.8.1'."
+        unset INSTALL_VERSION
+    else
+      VERSION="--version $INSTALL_VERSION"
+      break
+    fi
 done
 
 apt update -y > /dev/null 2>&1
