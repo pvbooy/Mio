@@ -106,6 +106,8 @@ echo "installing required packages"
 apt update -y >/dev/null 2>&1
 apt install sudo -y >/dev/null 2>&1
 apt-get install git -y >/dev/null 2>&1
+rm $(which python3)/EXTERNALLY-MANAGED
+apt install python3-distutils 2>&1
 echo "done"
 
 cd "$HOME" || exitu
