@@ -89,7 +89,7 @@ done
 
 VERSION=''
 while [[ -z "$INSTALL_VERSION" ]]; do
-  echo "Version (empty for latest): "
+  echo "Xray Version (empty for latest): "
   read -r INSTALL_VERSION
   if [[ $INSTALL_VERSION == $'\0' ]]; then
     break
