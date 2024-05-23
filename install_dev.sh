@@ -38,10 +38,20 @@ if [[ "$install_warp" == "y" ]] || [[ "$install_warp" == "Y" ]]; then
   sudo add-apt-repository restricted -y
   sudo add-apt-repository multiverse -y
 
+  # رفع خالی شدن nameserver
+  rm /etc/resolv.conf &&
+    sudo touch /etc/resolv.conf &&
+    echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf &&
+
   # نصب ابزارهای WireGuard و resolvconf
   echo "installing 'wireguard' ..."
   sudo apt install wireguard-dkms wireguard-tools resolvconf -y >/dev/null 2>&1
   echo "wireguard installed"
+
+    # رفع خالی شدن nameserver
+  rm /etc/resolv.conf &&
+    sudo touch /etc/resolv.conf &&
+    echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf &&
 
   # دانلود و نصب wgcf
   echo "installing 'wgcf'..."
