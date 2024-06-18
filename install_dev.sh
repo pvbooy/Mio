@@ -132,7 +132,7 @@ if [[ $INSTALL_TYPE = "m" ]]; then
 
 cat >$SERVICE_FILE <<EOF
 [Unit]
-Description="Created By AC Lover"
+Description="Created By Boy"
 After=network.target nss-lookup.target
 
 [Service]
@@ -175,7 +175,7 @@ else
   cp /usr/local/bin/xray /var/lib/marzban-node/xray
 
   echo -e "\e[1;31m -Install Marzban node + Docker\e[0m"
-  curl -fsSL https://get.docker.com | sh >/dev/null 2>&1
+  curl -fsSL https://get.docker.com | sh
 
   (cd "$HOME"/Marzban-node && docker compose up -d)
   rm "$HOME"/Marzban-node/docker-compose.yml
