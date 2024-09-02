@@ -42,10 +42,20 @@ if [ $install_warp == "y" ]; then
     # نصب ابزارهای WireGuard و resolvconf
     sudo apt install wireguard-dkms wireguard-tools resolvconf -y
 
+    # رفع خالی شدن nameserver
+    rm /etc/resolv.conf && \
+    sudo touch /etc/resolv.conf && \
+    echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf && \
+
     # دانلود و نصب wgcf
     wget https://github.com/ViRb3/wgcf/releases/download/v2.2.18/wgcf_2.2.18_linux_amd64
     mv wgcf_2.2.18_linux_amd64 /usr/bin/wgcf
     chmod +x /usr/bin/wgcf
+
+    # رفع خالی شدن nameserver
+    rm /etc/resolv.conf && \
+    sudo touch /etc/resolv.conf && \
+    echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 127.0.0.53" | sudo tee -a /etc/resolv.conf && \
 
     # ثبت و تولید پروفایل
     wgcf register --accept-tos
