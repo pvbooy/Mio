@@ -99,7 +99,7 @@ apt install wget unzip -y
 mkdir -p /var/lib/marzban/xray-core
 
 # دانلود و استخراج فایل Xray
-wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip wget https://github.com/XTLS/Xray-core/releases/download/v1.8.11/Xray-linux-64.zip
+wget -O /var/lib/marzban/xray-core/Xray-linux-64.zip wget https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
 unzip /var/lib/marzban/xray-core/Xray-linux-64.zip -d /var/lib/marzban/xray-core
 
 # حذف فایل فشرده دانلود شده
